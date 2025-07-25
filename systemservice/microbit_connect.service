@@ -1,0 +1,11 @@
+[Unit]
+Description=Micro:bit USB Connector
+After=dev-microbit.device
+
+[Service]
+ExecStart=/usr/local/bin/microbit_driver.py
+Restart=on-failure
+StandardOutput=journal
+
+[Install]
+WantedBy=multi-user.target
