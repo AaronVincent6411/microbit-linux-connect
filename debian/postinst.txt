@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e
+# Install udev rule
+install -Dm644 /usr/share/microbit-linux-connect/microbit_driver.rules /etc/udev/rules.d/microbit_driver.rules
+udevadm control --reload-rules
+systemctl daemon-reload
+systemctl enable microbit_connect.service
+exit 0

@@ -1,0 +1,5 @@
+#!/bin/bash
+set -e
+systemctl disable microbit_connect.service || true
+rm -f /etc/udev/rules.d/microbit_driver.rules
+exit 0
