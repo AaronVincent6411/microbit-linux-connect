@@ -1,0 +1,33 @@
+name: Build Packages
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Debian package
+        run: |
+          sudo apt update
+          sudo apt install -y dpkg-dev debhelper
+          dpkg-buildpackage -us -uc
+      - name: Upload Debian artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: debian-package
+          path: ../microbit-linux-connect_*.deb
+      - name: Build RPM package
+        run: |
+          sudo apt install -y rpm
+          mkdir -p ~/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
+          tar czf ~/rpmbuild/SOURCES/microbit-linux-connect-1.0.tar.gz .
+          rpmbuild -ba rpm/microbit-linux-connect.spec
+      - name: Upload RPM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpm-package
+          path: ~/rpmbuild/RPMS/*/*.rpm
